@@ -112,6 +112,7 @@
 				<Variable Class="PlainVariable">
 					<Id>1541465929535</Id>
 					<Name><![CDATA[dataDerivedFromNewData]]></Name>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
 					<X>360</X><Y>80</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
@@ -129,8 +130,7 @@
 				<Event>
 					<Id>1541438121852</Id>
 					<Name><![CDATA[test_getNext]]></Name>
-					<ExcludeFromBuild>true</ExcludeFromBuild>
-					<X>360</X><Y>150</Y>
+					<X>190</X><Y>130</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -147,7 +147,7 @@
 						<OccurrenceAtTime>true</OccurrenceAtTime>
 						<OccurrenceDate>1541491200000</OccurrenceDate>
 						<OccurrenceTime Class="CodeUnitValue">
-							<Code><![CDATA[0]]></Code>
+							<Code><![CDATA[1]]></Code>
 							<Unit Class="TimeUnits"><![CDATA[SECOND]]></Unit>
 						</OccurrenceTime>
 						<RecurrenceCode Class="CodeUnitValue">
@@ -156,23 +156,17 @@
 						</RecurrenceCode>
 						<Condition><![CDATA[false]]></Condition>
 					</Properties>
-					<Action><![CDATA[/*
-try {
-	Thread.currentThread().sleep(5000);
-} catch(InterruptedException ie) {
-	ie.printStackTrace();
-}
+					<Action><![CDATA[
 traceln("Get Next");
 traceln(streamingCollection.getNext());
 
-streamingCollection.stopReceiving();
-*/
 
 ]]></Action>
 				</Event>
 				<Event>
 					<Id>1541466210148</Id>
 					<Name><![CDATA[event]]></Name>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
 					<X>360</X><Y>180</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
@@ -258,9 +252,15 @@ traceln("[%f] new dataDerivedFromNewData = %f", time(), dataDerivedFromNewData);
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[channelName]]></Name>
+							<Value Class="CodeValue">
+								<Code><![CDATA["testchannel"]]></Code>
+							</Value>
 						</Parameter>
 						<Parameter>
 							<Name><![CDATA[assignCallback]]></Name>
+						</Parameter>
+						<Parameter>
+							<Name><![CDATA[timeUnit]]></Name>
 						</Parameter>
 					</Parameters>
 					<ReplicationFlag>false</ReplicationFlag>
@@ -344,12 +344,34 @@ traceln(" isDataReady = %s", streamingCollection.isDataReady);]]></ActionCode>
 						<Enabled>true</Enabled>
 						<ActionCode><![CDATA[//traceln(" needData = %s", streamingCollection.needData);
 //streamingCollection.needData = true;
-streamingCollection.blockStateChart.receiveMessage("NeedData");
-//traceln(" needData = %s", streamingCollection.needData);]]></ActionCode>
+//streamingCollection.blockStateChart.receiveMessage("NeedData");
+//traceln(" needData = %s", streamingCollection.needData);
+traceln(streamingCollection.getNext());]]></ActionCode>
 					</BasicProperties>
 					<ExtendedProperties>
 						<Font Name="Dialog" Size="11" Style="0"/>
 						<LabelText><![CDATA[Need Data]]></LabelText>
+					</ExtendedProperties>
+				</Control>
+				<Control Type="Button">
+				 	<EmbeddedIcon>false</EmbeddedIcon>				
+					<Id>1541644665953</Id>
+					<Name><![CDATA[button2]]></Name>
+					<X>670</X><Y>220</Y>
+					<Label><X>0</X><Y>-10</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<BasicProperties Width="100" Height="30">
+                        <EmbeddedIcon>false</EmbeddedIcon>	
+						<TextColor/>
+						<Enabled>true</Enabled>
+						<ActionCode><![CDATA[
+streamingCollection.stopReceiving();]]></ActionCode>
+					</BasicProperties>
+					<ExtendedProperties>
+						<Font Name="Dialog" Size="11" Style="0"/>
+						<LabelText><![CDATA[Unsubscribe]]></LabelText>
 					</ExtendedProperties>
 				</Control>
 			</Controls>
@@ -471,7 +493,7 @@ import java.util.function.Consumer;]]></Import>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="private" StaticVariable="false">
 						<Type><![CDATA[LiveDataset]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[new LiveDataset(x -> traceln(x))]]></Code>
+							<Code><![CDATA[new LiveDataset(channelName, timeUnit, x -> traceln(x))]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -479,7 +501,7 @@ import java.util.function.Consumer;]]></Import>
 					<Id>1541465291074</Id>
 					<Name><![CDATA[do_update]]></Name>
 					<ExcludeFromBuild>true</ExcludeFromBuild>
-					<X>70</X><Y>290</Y>
+					<X>1080</X><Y>330</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -501,7 +523,7 @@ import java.util.function.Consumer;]]></Import>
 					<Id>1541465760303</Id>
 					<Name><![CDATA[isDataReady]]></Name>
 					<ExcludeFromBuild>true</ExcludeFromBuild>
-					<X>70</X><Y>310</Y>
+					<X>1080</X><Y>350</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -546,7 +568,8 @@ import java.util.function.Consumer;]]></Import>
 				<Variable Class="Parameter">
 					<Id>1541563270532</Id>
 					<Name><![CDATA[assignCallback]]></Name>
-					<X>70</X><Y>330</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1080</X><Y>370</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -567,12 +590,37 @@ import java.util.function.Consumer;]]></Import>
 						</ParameterEditor>
 					</Properties>                 
 				</Variable>
+				<Variable Class="Parameter">
+					<Id>1541999271287</Id>
+					<Name><![CDATA[timeUnit]]></Name>
+					<X>70</X><Y>100</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[double]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[1.0]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1541999271285</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
 			</Variables>
 			<StatechartElements>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
 					<Id>1541266043437</Id>
 					<Name><![CDATA[block]]></Name>
-					<X>750</X><Y>160</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1690</X><Y>160</Y>
 					<Label><X>95</X><Y>50</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -585,7 +633,8 @@ import java.util.function.Consumer;]]></Import>
 				<StatechartElement Class="State" ParentState="ROOT_NODE">
 					<Id>1541465192159</Id>
 					<Name><![CDATA[update]]></Name>
-					<X>320</X><Y>170</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1260</X><Y>170</Y>
 					<Label><X>80</X><Y>45</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -598,7 +647,8 @@ import java.util.function.Consumer;]]></Import>
 				<StatechartElement Class="Branch" ParentState="ROOT_NODE">
 					<Id>1541467618117</Id>
 					<Name><![CDATA[branch]]></Name>
-					<X>400</X><Y>360</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1340</X><Y>360</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -609,7 +659,8 @@ import java.util.function.Consumer;]]></Import>
 				<StatechartElement Class="EntryPoint" ParentState="ROOT_NODE">
 					<Id>1541266000688</Id>
 					<Name><![CDATA[blockStateChart]]></Name>
-					<X>420</X><Y>130</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1360</X><Y>130</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -624,7 +675,8 @@ import java.util.function.Consumer;]]></Import>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1541465199642</Id>
 					<Name><![CDATA[CheckDataReady]]></Name>
-					<X>780</X><Y>270</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1720</X><Y>270</Y>
 					<Label><X>-210</X><Y>105</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -655,7 +707,8 @@ import java.util.function.Consumer;]]></Import>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1541465204280</Id>
 					<Name><![CDATA[GetNeedData]]></Name>
-					<X>530</X><Y>210</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1470</X><Y>210</Y>
 					<Label><X>65</X><Y>-15</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -686,7 +739,8 @@ import java.util.function.Consumer;]]></Import>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1541467923089</Id>
 					<Name><![CDATA[Back]]></Name>
-					<X>400</X><Y>350</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1340</X><Y>350</Y>
 					<Label><X>-40</X><Y>-40</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -724,7 +778,8 @@ traceln("Done")]]></Action>
 				<StatechartElement Class="Transition" ParentState="ROOT_NODE">
 					<Id>1541467932465</Id>
 					<Name><![CDATA[BackToBlock]]></Name>
-					<X>400</X><Y>370</Y>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1340</X><Y>370</Y>
 					<Label><X>90</X><Y>70</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -768,12 +823,46 @@ traceln("Done")]]></Action>
 					<Body><![CDATA[
 liveDataset.stop();]]></Body>
 				</Function>
-				<Function AccessType="default" StaticFunction="false">
-					<ReturnModificator>VOID</ReturnModificator>
+				<Function AccessType="public" StaticFunction="false">
+					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
 					<ReturnType><![CDATA[double]]></ReturnType>
 					<Id>1541465494595</Id>
 					<Name><![CDATA[getNext]]></Name>
 					<X>70</X><Y>270</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[
+try {
+    double r = this.liveDataset.getNext();
+    
+	return r;
+} catch (InterruptedException e) {
+    e.printStackTrace();
+    error(e, e.getMessage());
+    return Double.NEGATIVE_INFINITY;
+}]]></Body>
+				</Function>
+				<Function AccessType="public" StaticFunction="false">
+					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
+					<ReturnType><![CDATA[boolean]]></ReturnType>
+					<Id>1541565529821</Id>
+					<Name><![CDATA[needBlock]]></Name>
+					<X>70</X><Y>310</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Body><![CDATA[return this.liveDataset.needBlock();]]></Body>
+				</Function>
+				<Function AccessType="default" StaticFunction="false">
+					<ReturnModificator>VOID</ReturnModificator>
+					<ReturnType><![CDATA[double]]></ReturnType>
+					<Id>1541640651974</Id>
+					<Name><![CDATA[getNext1]]></Name>
+					<ExcludeFromBuild>true</ExcludeFromBuild>
+					<X>1080</X><Y>310</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
@@ -787,17 +876,29 @@ this.blockStateChart.fireEvent("NeedData");
 traceln("Send NeedData");
 ]]></Body>
 				</Function>
-				<Function AccessType="default" StaticFunction="false">
+				<Function AccessType="public" StaticFunction="false">
 					<ReturnModificator>RETURNS_VALUE</ReturnModificator>
-					<ReturnType><![CDATA[boolean]]></ReturnType>
-					<Id>1541565529821</Id>
-					<Name><![CDATA[needBlock]]></Name>
-					<X>70</X><Y>350</Y>
+					<ReturnType><![CDATA[double]]></ReturnType>
+					<Id>1541999077148</Id>
+					<Name><![CDATA[getByTime]]></Name>
+					<X>70</X><Y>290</Y>
 					<Label><X>10</X><Y>0</Y></Label>
 					<PublicFlag>false</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>true</ShowLabel>
-					<Body><![CDATA[return this.liveDataset.needBlock();]]></Body>
+					<Parameter>
+						<Name><![CDATA[timeIndex]]></Name>
+						<Type><![CDATA[double]]></Type>
+					</Parameter>
+					<Body><![CDATA[try {
+    double r = this.liveDataset.getByTime(timeIndex);
+    
+	return r;
+} catch (InterruptedException e) {
+    e.printStackTrace();
+    error(e, e.getMessage());
+    return Double.NEGATIVE_INFINITY;
+}]]></Body>
 				</Function>
 			</Functions>
 			<AgentLinks>
@@ -813,11 +914,6 @@ traceln("Send NeedData");
 					<AgentLinkType>COLLECTION_OF_LINKS</AgentLinkType>
 					<AgentLinkBidirectional>true</AgentLinkBidirectional>
 					<MessageType><![CDATA[Object]]></MessageType>
-					<StatechartReference>
-						<PackageName><![CDATA[streamingcollection]]></PackageName>
-						<ClassName><![CDATA[StreamingCollection]]></ClassName>
-						<ItemName><![CDATA[blockStateChart]]></ItemName>
-					</StatechartReference>
 					<LineStyle>SOLID</LineStyle>
 					<LineWidth>1</LineWidth>
 					<LineColor>-16777216</LineColor>
@@ -1130,7 +1226,7 @@ traceln("Send NeedData");
 			<AOCEntry>
 				<ActiveObjectClassId>1541199975611</ActiveObjectClassId>
 			</AOCEntry>
-			<IconFile><![CDATA[streamingCollectionLibrary (4).png]]></IconFile>
+			<IconFile><![CDATA[streamingCollectionLibrary.png]]></IconFile>
 			<VersionMajor>1</VersionMajor>
 			<VersionMinor>0</VersionMinor>
 			<VersionBuild>0</VersionBuild>
@@ -1138,7 +1234,7 @@ traceln("Send NeedData");
 		</Library>
 	</Libraries>
 	<ClassPathEntry>
-		<Location><![CDATA[/Users/ld/.m2/repository/io/lujieduan/simulation-streaming-client/1.0-SNAPSHOT/simulation-streaming-client-1.0-SNAPSHOT.jar]]></Location>
+		<Location><![CDATA[/Users/LD/.m2/repository/io/lujieduan/simulation-streaming-client/1.0-SNAPSHOT/simulation-streaming-client-1.0-SNAPSHOT.jar]]></Location>
 		<Imported>false</Imported>
 		<Folder>false</Folder>
 	</ClassPathEntry>
