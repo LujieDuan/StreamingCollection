@@ -4,7 +4,7 @@
 	         AnyLogic Project File 
 *************************************************	         
 -->
-<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="8.3.2.201807061817" AlpVersion="8.3.1">
+<AnyLogicWorkspace WorkspaceVersion="1.9" AnyLogicVersion="8.5.1.201910011758" AlpVersion="8.4.9">
 <Model>
 	<Id>1541182942977</Id>
 	<Name><![CDATA[StreamingCollection]]></Name>
@@ -34,6 +34,7 @@
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
+			<SceneSkybox>null</SceneSkybox>
 			<AgentProperties>
 	 			<SpaceType>CONTINUOUS</SpaceType>			
 				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
@@ -107,6 +108,7 @@
 				<Scale>10</Scale>
 				<InheritedFromParentAgentType>true</InheritedFromParentAgentType>
 			</ScaleRuler>
+			<CurrentLevel>1575855253561</CurrentLevel>
 			<ConnectionsId>1541182942979</ConnectionsId>
 			<Variables>
 				<Variable Class="PlainVariable">
@@ -262,6 +264,9 @@ traceln("[%f] new dataDerivedFromNewData = %f", time(), dataDerivedFromNewData);
 						<Parameter>
 							<Name><![CDATA[timeUnit]]></Name>
 						</Parameter>
+						<Parameter>
+							<Name><![CDATA[initialList]]></Name>
+						</Parameter>
 					</Parameters>
 					<ReplicationFlag>false</ReplicationFlag>
 					<Replication Class="CodeValue">
@@ -305,7 +310,20 @@ traceln("[%f] new dataDerivedFromNewData = %f", time(), dataDerivedFromNewData);
 				</EmbeddedObject>
 			</EmbeddedObjects>
 
-			<Controls>
+			<Presentation>
+				<Level>
+					<Id>1575855253561</Id>
+					<Name><![CDATA[level]]></Name>
+					<X>0</X><Y>0</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<Z>0</Z>
+					<LevelVisibility>ALWAYS_SHOW</LevelVisibility>
+
+			<Presentation>
 				<Control Type="Button">
 				 	<EmbeddedIcon>false</EmbeddedIcon>				
 					<Id>1541466204369</Id>
@@ -316,6 +334,7 @@ traceln("[%f] new dataDerivedFromNewData = %f", time(), dataDerivedFromNewData);
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
 					<BasicProperties Width="100" Height="30">
                         <EmbeddedIcon>false</EmbeddedIcon>	
 						<TextColor/>
@@ -338,6 +357,7 @@ traceln(" isDataReady = %s", streamingCollection.isDataReady);]]></ActionCode>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
 					<BasicProperties Width="100" Height="30">
                         <EmbeddedIcon>false</EmbeddedIcon>	
 						<TextColor/>
@@ -362,6 +382,7 @@ traceln(streamingCollection.getNext());]]></ActionCode>
 					<PublicFlag>true</PublicFlag>
 					<PresentationFlag>true</PresentationFlag>
 					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
 					<BasicProperties Width="100" Height="30">
                         <EmbeddedIcon>false</EmbeddedIcon>	
 						<TextColor/>
@@ -374,7 +395,10 @@ streamingCollection.stopReceiving();]]></ActionCode>
 						<LabelText><![CDATA[Unsubscribe]]></LabelText>
 					</ExtendedProperties>
 				</Control>
-			</Controls>
+			</Presentation>
+
+				</Level>
+			</Presentation>
 
 		</ActiveObjectClass>
 		<!--   =========   Active Object Class   ========  -->
@@ -407,6 +431,7 @@ import java.util.function.Consumer;]]></Import>
 			<MakeDefaultViewArea>true</MakeDefaultViewArea>
 			<SceneGridColor/>
 			<SceneBackgroundColor/>
+			<SceneSkybox>null</SceneSkybox>
 			<AgentProperties>
 	 			<SpaceType>CONTINUOUS</SpaceType>			
 				<EnvironmentDefinesInitialLocation>true</EnvironmentDefinesInitialLocation>
@@ -480,6 +505,7 @@ import java.util.function.Consumer;]]></Import>
 				<Scale>10</Scale>
 				<InheritedFromParentAgentType>true</InheritedFromParentAgentType>
 			</ScaleRuler>
+			<CurrentLevel>1575855253562</CurrentLevel>
 			<ConnectionsId>1541199975606</ConnectionsId>
 			<Variables>
 				<Variable Class="PlainVariable">
@@ -493,7 +519,7 @@ import java.util.function.Consumer;]]></Import>
 					<Properties SaveInSnapshot="true" Constant="false" AccessType="private" StaticVariable="false">
 						<Type><![CDATA[LiveDataset]]></Type>        
 						<InitialValue Class="CodeValue">
-							<Code><![CDATA[new LiveDataset(channelName, timeUnit, x -> traceln(x))]]></Code>
+							<Code><![CDATA[new LiveDataset(channelName, timeUnit, initialList, x -> traceln(x))]]></Code>
 						</InitialValue>
 					</Properties>
 				</Variable>
@@ -607,6 +633,30 @@ import java.util.function.Consumer;]]></Import>
 						</DefaultValue>
 						<ParameterEditor>
 							<Id>1541999271285</Id>
+							<EditorContolType>TEXT_BOX</EditorContolType>
+							<MinSliderValue><![CDATA[0]]></MinSliderValue>
+							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
+							<DelimeterType>NO_DELIMETER</DelimeterType>
+						</ParameterEditor>
+					</Properties>                 
+				</Variable>
+				<Variable Class="Parameter">
+					<Id>1575855368359</Id>
+					<Name><![CDATA[initialList]]></Name>
+					<X>70</X><Y>120</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>false</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>true</ShowLabel>
+					<Properties SaveInSnapshot="true" ModificatorType="STATIC">
+						<Type><![CDATA[Collection<Double>]]></Type>
+						<UnitType><![CDATA[NONE]]></UnitType>
+						<SdArray>false</SdArray>
+						<DefaultValue Class="CodeValue">
+							<Code><![CDATA[Collections.emptyList()]]></Code>
+						</DefaultValue>
+						<ParameterEditor>
+							<Id>1575855368357</Id>
 							<EditorContolType>TEXT_BOX</EditorContolType>
 							<MinSliderValue><![CDATA[0]]></MinSliderValue>
 							<MaxSliderValue><![CDATA[100]]></MaxSliderValue>
@@ -939,7 +989,20 @@ traceln("Send NeedData");
 				</ContainerLink>
 			</ContainerLinks>
 
-			<Shapes>
+			<Presentation>
+				<Level>
+					<Id>1575855253562</Id>
+					<Name><![CDATA[level]]></Name>
+					<X>0</X><Y>0</Y>
+					<Label><X>10</X><Y>0</Y></Label>
+					<PublicFlag>true</PublicFlag>
+					<PresentationFlag>true</PresentationFlag>
+					<ShowLabel>false</ShowLabel>
+					<DrawMode>SHAPE_DRAW_2D3D</DrawMode>
+					<Z>0</Z>
+					<LevelVisibility>ALWAYS_SHOW</LevelVisibility>
+
+			<Presentation>
 				<Group>
 					<Id>1541199975618</Id>
 					<Name><![CDATA[message]]></Name>
@@ -953,7 +1016,7 @@ traceln("Send NeedData");
 					<Z>0</Z>
 					<Rotation>0.0</Rotation>
 
-			<Shapes>
+			<Presentation>
 				<Rectangle>
 					<Id>1541199975620</Id>
 					<Name><![CDATA[_ps310]]></Name>
@@ -1107,10 +1170,13 @@ traceln("Send NeedData");
 					<Dy>-6</Dy>
 					<Dz>0</Dz>
 				</Line>
-			</Shapes>
+			</Presentation>
 
 				</Group>
-			</Shapes>
+			</Presentation>
+
+				</Level>
+			</Presentation>
 
 		</ActiveObjectClass>
 	</ActiveObjectClasses>	
@@ -1128,16 +1194,17 @@ traceln("Send NeedData");
 	<Database>
 		<Logging>false</Logging>
 		<AutoExport>false</AutoExport>
+		<ShutdownCompact>false</ShutdownCompact>
 		<ImportSettings>
 		</ImportSettings>
 		<ExportSettings>
-			<ExportExcelFilePath><![CDATA[]]></ExportExcelFilePath>
 		</ExportSettings>
 	</Database>
 	
 	<RunConfiguration ActiveObjectClassId="1541182942985">
 		<Id>1541182943017</Id>
 		<Name><![CDATA[RunConfiguration]]></Name>
+		<MaximumMemory>512</MaximumMemory>
 		<ModelTimeProperties>
 			<StopOption><![CDATA[Stop at specified time]]></StopOption>
 			<InitialDate><![CDATA[1541116800000]]></InitialDate>	
@@ -1172,9 +1239,8 @@ traceln("Send NeedData");
 			<SelectionModeForSimultaneousEvents>LIFO</SelectionModeForSimultaneousEvents>
 			<VmArgs><![CDATA[]]></VmArgs>
 			<LoadRootFromSnapshot>false</LoadRootFromSnapshot>
-			<SnapshotFile></SnapshotFile>
 
-			<Shapes>
+			<Presentation>
 				<Text>
 					<Id>0</Id>
 					<Name><![CDATA[text]]></Name>
@@ -1196,7 +1262,7 @@ traceln("Send NeedData");
 					</Font>
 					<Alignment>LEFT</Alignment>
 				</Text>
-			</Shapes>
+			</Presentation>
 
 			<Parameters>			
 			</Parameters>			
@@ -1226,15 +1292,32 @@ traceln("Send NeedData");
 			<AOCEntry>
 				<ActiveObjectClassId>1541199975611</ActiveObjectClassId>
 			</AOCEntry>
-			<IconFile><![CDATA[streamingCollectionLibrary.png]]></IconFile>
+
+			<IconResourceReference>
+				<PackageName><![CDATA[streamingcollection]]></PackageName>
+				<ClassName><![CDATA[streamingCollectionLibrary.png]]></ClassName>
+			</IconResourceReference>
 			<VersionMajor>1</VersionMajor>
 			<VersionMinor>0</VersionMinor>
 			<VersionBuild>0</VersionBuild>
 			<Provider><![CDATA[io.lujieduan]]></Provider>    
 		</Library>
 	</Libraries>
+	<ModelResources>
+		<Resource>
+			<Path><![CDATA[streamingCollectionLibrary.png]]></Path>
+			<ReferencedFromUserCode>false</ReferencedFromUserCode>
+		</Resource>
+		<Resource>
+			<Path><![CDATA[/Users/LD/.m2/repository/io/lujieduan/simulation-streaming-client/1.0-SNAPSHOT/simulation-streaming-client-1.0-SNAPSHOT.jar]]></Path>
+			<ReferencedFromUserCode>false</ReferencedFromUserCode>
+		</Resource>
+	</ModelResources>
 	<ClassPathEntry>
-		<Location><![CDATA[/Users/LD/.m2/repository/io/lujieduan/simulation-streaming-client/1.0-SNAPSHOT/simulation-streaming-client-1.0-SNAPSHOT.jar]]></Location>
+		<ResourceReference>
+			<PackageName><![CDATA[streamingcollection]]></PackageName>
+			<ClassName><![CDATA[/Users/LD/.m2/repository/io/lujieduan/simulation-streaming-client/1.0-SNAPSHOT/simulation-streaming-client-1.0-SNAPSHOT.jar]]></ClassName>
+		</ResourceReference>
 		<Imported>false</Imported>
 		<Folder>false</Folder>
 	</ClassPathEntry>
